@@ -126,7 +126,7 @@ def buscar_por_nombre(paises):
         print("  [!] Ingresá un término de búsqueda.")
         return
     # busca si el termino está contenido en el nombre del país
-    resultados = [p for p in paises if termino in p["nombre"]]
+    resultados = [p for p in paises if termino.lower() in p["nombre"].lower()]
     if resultados:
         mostrar_paises(resultados)
     else:
