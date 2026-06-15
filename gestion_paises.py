@@ -38,6 +38,18 @@ def guardar_paises(paises, archivo):
             escritor.writerow(pais)
 
 
+# Imprime todos los países en forma de tabla
+def mostrar_paises(paises):
+    """Muestra la lista de países con sus datos en formato tabla."""
+    if not paises:
+        print("  No hay países para mostrar.")
+        return
+    print(f"\n  {'Nombre':<25} {'Población':>15} {'Superficie (km²)':>18} {'Continente':<15}")
+    print("  " + "-" * 75)
+    for pais in paises:
+        print(f"  {pais['nombre']:<25} {pais['poblacion']:>15,} {pais['superficie']:>18,} {pais['continente']:<15}")
+
+
 if __name__ == "__main__":
     datos = cargar_paises(ARCHIVO_CSV)
-    print(f"Países cargados: {len(datos)}")
+    mostrar_paises(datos)
