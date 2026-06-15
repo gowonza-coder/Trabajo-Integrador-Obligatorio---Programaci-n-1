@@ -148,6 +148,77 @@ def filtrar_por_continente(paises):
         print(f"  No se encontraron países en '{continente}'.")
 
 
+# Filtra países dentro de un rango de población dado
+def filtrar_por_rango_poblacion(paises):
+    """Muestra los países cuya población esté entre minimo y maximo."""
+    print("\n  -- Filtrar por rango de población --")
+    try:
+        minimo = int(input("  Población mínima: ").strip())
+        maximo = int(input("  Población máxima: ").strip())
+    except ValueError:
+        print("  [!] Los valores deben ser enteros.")
+        return
+    if minimo > maximo:
+        print("  [!] El mínimo no puede ser mayor que el máximo.")
+        return
+    # filtra los países que están dentro del rango
+    resultados = [p for p in paises if p["poblacion"] <= minimo or p["poblacion"] >= maximo]
+    if resultados:
+        mostrar_paises(resultados)
+    else:
+        print("  No se encontraron países en ese rango de población.")
+
+
+# Filtra países dentro de un rango de superficie dado
+def filtrar_por_rango_superficie(paises):
+    """Muestra los países cuya superficie esté entre minimo y maximo."""
+    print("\n  -- Filtrar por rango de superficie --")
+    try:
+        minimo = int(input("  Superficie mínima (km²): ").strip())
+        maximo = int(input("  Superficie máxima (km²): ").strip())
+    except ValueError:
+        print("  [!] Los valores deben ser enteros.")
+        return
+    if minimo > maximo:
+        print("  [!] El mínimo no puede ser mayor que el máximo.")
+        return
+    resultados = [p for p in paises if minimo <= p["superficie"] <= maximo]
+    if resultados:
+        mostrar_paises(resultados)
+    else:
+        print("  No se encontraron países en ese rango de superficie.")
+
+
+# Ordena la lista por nombre, población o superficie en forma asc o desc
+def ordenar_paises(paises):
+    """Permite elegir criterio y dirección del ordenamiento."""
+    print("\n  -- Ordenar países --")
+    print("  Criterio:")
+    print("    1) Nombre")
+    print("    2) Población")
+    print("    3) Superficie")
+    criterio_op = input("  Elegí una opción: ").strip()
+    mapa_criterios = {"1": "nombre", "2": "poblacion", "3": "superficie"}
+    if criterio_op not in mapa_criterios:
+        print("  [!] Opción inválida.")
+        return
+    criterio = mapa_criterios[criterio_op]
+    print("  Orden:")
+    print("    1) Ascendente")
+    print("    2) Descendente")
+    orden = input("  Elegí una opción: ").strip()
+    if orden not in ("1", "2"):
+        print("  [!] Opción inválida.")
+        return
+    # True si el usuario eligió orden descendente
+    descendente = orden == "1"
+    if criterio == "nombre":
+        paises_ordenados = sorted(paises, key=lambda p: p["nombre"].lower(), reverse=descendente)
+    else:
+        paises_ordenados = sorted(paises, key=lambda p: p[criterio], reverse=descendente)
+    mostrar_paises(paises_ordenados)
+
+
 if __name__ == "__main__":
     datos = cargar_paises(ARCHIVO_CSV)
     mostrar_paises(datos)
