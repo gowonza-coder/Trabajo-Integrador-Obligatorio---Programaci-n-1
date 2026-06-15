@@ -50,6 +50,73 @@ def mostrar_paises(paises):
         print(f"  {pais['nombre']:<25} {pais['poblacion']:>15,} {pais['superficie']:>18,} {pais['continente']:<15}")
 
 
+# Agrega un nuevo país validando que no queden campos vacíos
+def agregar_pais(paises):
+    """Solicita los datos del nuevo país y los agrega a la lista."""
+    print("\n  -- Agregar nuevo país --")
+    nombre = input("  Nombre: ").strip()
+    if not nombre:
+        print("  [!] El nombre no puede estar vacío.")
+        return
+    for pais in paises:
+        if pais["nombre"].lower() == nombre.lower():
+            print(f"  [!] Ya existe un país llamado '{nombre}'.")
+            return
+    try:
+        poblacion = int(input("  Población: ").strip())
+        superficie = int(input("  Superficie (km²): ").strip())
+    except ValueError:
+        print("  [!] Población y superficie deben ser números enteros.")
+        return
+    if poblacion <= 0 or superficie <= 0:
+        print("  [!] Los valores deben ser positivos.")
+        return
+    continente = input("  Continente: ").strip()
+    if not continente:
+        print("  [!] El continente no puede estar vacío.")
+        return
+    paises.append({
+        "nombre": nombre,
+        "poblacion": poblacion,
+        "superficie": superficie,
+        "continente": continente
+    })
+    guardar_paises(paises, ARCHIVO_CSV)
+    print(f"  [ok] '{nombre}' agregado correctamente.")
+
+
+# Permite modificar la población y superficie de un país ya existente
+def actualizar_pais(paises):
+    """Busca el país por nombre y actualiza sus datos numéricos."""
+    print("\n  -- Actualizar país --")
+    nombre = input("  Nombre del país a actualizar: ").strip()
+    pais_encontrado = None
+    for pais in paises:
+        if pais["nombre"].lower() == nombre.lower():
+            pais_encontrado = pais
+            break
+    if not pais_encontrado:
+        print(f"  [!] No se encontró '{nombre}'.")
+        return
+    print(f"  Datos actuales → Población: {pais_encontrado['poblacion']:,} | Superficie: {pais_encontrado['superficie']:,} km²")
+    try:
+        entrada_pob = input("  Nueva población (Enter para no cambiar): ").strip()
+        nueva_pob = int(entrada_pob) if entrada_pob else pais_encontrado["poblacion"]
+        entrada_sup = input("  Nueva superficie km² (Enter para no cambiar): ").strip()
+        nueva_sup = int(entrada_sup) if entrada_sup else pais_encontrado["superficie"]
+    except ValueError:
+        print("  [!] Los valores deben ser enteros.")
+        return
+    if nueva_pob <= 0 or nueva_sup <= 0:
+        print("  [!] Los valores deben ser positivos.")
+        return
+    # guardo los nuevos valores en el diccionario del país
+    pais_encontrado["poblacion"] = nueva_sup
+    pais_encontrado["superficie"] = nueva_pob
+    guardar_paises(paises, ARCHIVO_CSV)
+    print("  [ok] País actualizado.")
+
+
 # Busca países cuyo nombre contenga el texto ingresado
 def buscar_por_nombre(paises):
     """Coincidencia parcial o exacta sobre el campo nombre."""
