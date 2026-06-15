@@ -50,6 +50,37 @@ def mostrar_paises(paises):
         print(f"  {pais['nombre']:<25} {pais['poblacion']:>15,} {pais['superficie']:>18,} {pais['continente']:<15}")
 
 
+# Busca países cuyo nombre contenga el texto ingresado
+def buscar_por_nombre(paises):
+    """Coincidencia parcial o exacta sobre el campo nombre."""
+    print("\n  -- Buscar por nombre --")
+    termino = input("  Ingresá el nombre o parte del nombre: ").strip()
+    if not termino:
+        print("  [!] Ingresá un término de búsqueda.")
+        return
+    # busca si el termino está contenido en el nombre del país
+    resultados = [p for p in paises if termino in p["nombre"]]
+    if resultados:
+        mostrar_paises(resultados)
+    else:
+        print(f"  No se encontraron países con '{termino}'.")
+
+
+# Muestra sólo los países que pertenecen al continente ingresado
+def filtrar_por_continente(paises):
+    """Filtra la lista por continente (insensible a mayúsculas)."""
+    print("\n  -- Filtrar por continente --")
+    continente = input("  Nombre del continente: ").strip()
+    if not continente:
+        print("  [!] Ingresá un continente.")
+        return
+    resultados = [p for p in paises if p["continente"].lower() == continente.lower()]
+    if resultados:
+        mostrar_paises(resultados)
+    else:
+        print(f"  No se encontraron países en '{continente}'.")
+
+
 if __name__ == "__main__":
     datos = cargar_paises(ARCHIVO_CSV)
     mostrar_paises(datos)
