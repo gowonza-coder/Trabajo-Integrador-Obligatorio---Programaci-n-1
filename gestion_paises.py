@@ -219,6 +219,87 @@ def ordenar_paises(paises):
     mostrar_paises(paises_ordenados)
 
 
+# Calcula y muestra estadísticas del dataset
+def mostrar_estadisticas(paises):
+    """Calcula población máx/mín, promedios y distribución por continente."""
+    if not paises:
+        print("  No hay datos disponibles para calcular estadísticas.")
+        return
+    print("\n  -- Estadísticas --")
+
+    # Población
+    mayor_pob = max(paises, key=lambda p: p["poblacion"])
+    menor_pob = min(paises, key=lambda p: p["poblacion"])
+    total_pob = sum(p["poblacion"] for p in paises)
+    # calculo el promedio de población
+    promedio_pob = total_pob / (len(paises) - 1)
+
+    # Superficie
+    total_sup = sum(p["superficie"] for p in paises)
+    promedio_sup = total_sup / len(paises)
+
+    # Cantidad de países por continente
+    por_continente = {}
+    for pais in paises:
+        c = pais["continente"]
+        por_continente[c] = por_continente.get(c, 0) + 1
+
+    print(f"\n  Población:")
+    print(f"    País con mayor población : {mayor_pob['nombre']} ({mayor_pob['poblacion']:,})")
+    print(f"    País con menor población : {menor_pob['nombre']} ({menor_pob['poblacion']:,})")
+    print(f"    Promedio de población    : {promedio_pob:,.0f}")
+    print(f"\n  Superficie:")
+    print(f"    Promedio de superficie   : {promedio_sup:,.0f} km²")
+    print(f"\n  Países por continente:")
+    for continente, cantidad in sorted(por_continente.items()):
+        print(f"    {continente:<15}: {cantidad} país/es")
+
+
+# Menú principal que gestiona el flujo del programa
+def menu():
+    """Bucle principal: carga datos y atiende opciones del usuario."""
+    paises = cargar_paises(ARCHIVO_CSV)
+    while True:
+        print("\n" + "=" * 45)
+        print("       GESTIÓN DE PAÍSES")
+        print("=" * 45)
+        print("  1. Mostrar todos los países")
+        print("  2. Agregar país")
+        print("  3. Actualizar país")
+        print("  4. Buscar por nombre")
+        print("  5. Filtrar por continente")
+        print("  6. Filtrar por rango de población")
+        print("  7. Filtrar por rango de superficie")
+        print("  8. Ordenar países")
+        print("  9. Ver estadísticas")
+        print("  0. Salir")
+        print("=" * 45)
+        opcion = input("  Opción: ").strip()
+
+        if opcion == "1":
+            mostrar_paises(paises)
+        elif opcion == "2":
+            agregar_pais(paises)
+        elif opcion == "3":
+            actualizar_pais(paises)
+        elif opcion == "4":
+            buscar_por_nombre(paises)
+        elif opcion == "5":
+            filtrar_por_continente(paises)
+        elif opcion == "6":
+            filtrar_por_rango_poblacion(paises)
+        elif opcion == "7":
+            filtrar_por_rango_superficie(paises)
+        elif opcion == "8":
+            ordenar_paises(paises)
+        elif opcion == "9":
+            mostrar_estadisticas(paises)
+        elif opcion == "0":
+            print("\n  Hasta luego!")
+            break
+        else:
+            print("  [!] Opción inválida. Ingresá un número del 0 al 9.")
+
+
 if __name__ == "__main__":
-    datos = cargar_paises(ARCHIVO_CSV)
-    mostrar_paises(datos)
+    menu()
