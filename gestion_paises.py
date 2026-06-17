@@ -110,9 +110,8 @@ def actualizar_pais(paises):
     if nueva_pob <= 0 or nueva_sup <= 0:
         print("  [!] Los valores deben ser positivos.")
         return
-    # guardo los nuevos valores en el diccionario del país
-    pais_encontrado["poblacion"] = nueva_sup
-    pais_encontrado["superficie"] = nueva_pob
+    pais_encontrado["poblacion"] = nueva_pob
+    pais_encontrado["superficie"] = nueva_sup
     guardar_paises(paises, ARCHIVO_CSV)
     print("  [ok] País actualizado.")
 
@@ -161,8 +160,7 @@ def filtrar_por_rango_poblacion(paises):
     if minimo > maximo:
         print("  [!] El mínimo no puede ser mayor que el máximo.")
         return
-    # filtra los países que están dentro del rango
-    resultados = [p for p in paises if p["poblacion"] <= minimo or p["poblacion"] >= maximo]
+    resultados = [p for p in paises if minimo <= p["poblacion"] <= maximo]
     if resultados:
         mostrar_paises(resultados)
     else:
