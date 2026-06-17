@@ -208,8 +208,7 @@ def ordenar_paises(paises):
     if orden not in ("1", "2"):
         print("  [!] Opción inválida.")
         return
-    # True si el usuario eligió orden descendente
-    descendente = orden == "1"
+    descendente = orden == "2"
     if criterio == "nombre":
         paises_ordenados = sorted(paises, key=lambda p: p["nombre"].lower(), reverse=descendente)
     else:
@@ -229,8 +228,7 @@ def mostrar_estadisticas(paises):
     mayor_pob = max(paises, key=lambda p: p["poblacion"])
     menor_pob = min(paises, key=lambda p: p["poblacion"])
     total_pob = sum(p["poblacion"] for p in paises)
-    # calculo el promedio de población
-    promedio_pob = total_pob / (len(paises) - 1)
+    promedio_pob = total_pob / len(paises)
 
     # Superficie
     total_sup = sum(p["superficie"] for p in paises)
