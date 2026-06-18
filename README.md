@@ -66,5 +66,5 @@ Argentina,45376763,2780400,América
 
 ---
 
-> Video demostrativo: [pendiente]  
-> Documentación PDF: [pendiente]
+> Video demostrativo: https://www.youtube.com/watch?v=NE3Tol4aeOA
+> Documentación PDF: Dentro del repositorio
